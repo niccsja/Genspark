@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Main{
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IndexOutOfBoundsException{
         String ans = "y";
         Scanner in = new Scanner(System.in);
         Random random = new Random();
@@ -26,6 +26,7 @@ public class Main{
                     System.out.println("Guess isn't within range");
                     System.out.println("Take a guess");
                     guess = in.nextInt();
+                    throw new IndexOutOfBoundsException("Num greater than bounds");
                 }
                 else if(guess > guessTarget) {
                     guessAmount++;
