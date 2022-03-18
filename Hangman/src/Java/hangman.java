@@ -6,28 +6,27 @@ import java.util.Scanner;
 public class hangman {
 
     public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
         Scanner keyboard = new Scanner(System.in);
         String word = "crawl";
 
         List<Character> guesses = new ArrayList<>();
         int wrongGuesses = 0;
         List<String> missedLetters = new ArrayList<>();
-        String missedString = missedLetters.toString();
-
 
         display(wrongGuesses, missedLetters);
-        System.out.println("This is the missed string "+missedString);
-
         gamePlay(keyboard, word, guesses, wrongGuesses, missedLetters);
     }
 
-    private static void gamePlay(Scanner keyboard, String word, List<Character> guesses, int wrongGuesses, List<String> missedLetters) {
+    public static void gamePlay(Scanner keyboard, String word, List<Character> guesses, int wrongGuesses, List<String> missedLetters) {
         boolean play = true;
 
         while (true) {
             printWordState(word, guesses);
+            if(wrongGuesses >= 7) {
+                System.out.println("You lose!" +
+                        "The word was" +word);
+                break;
+            }
             if (!getPlayerGuess(keyboard, word, guesses, missedLetters)) {
                 wrongGuesses++;
             }
@@ -51,7 +50,7 @@ public class hangman {
         }
     }
 
-    private static boolean getPlayerGuess(Scanner keyboard, String word, List<Character> guesses, List<String> missedLetter) {
+    public static boolean getPlayerGuess(Scanner keyboard, String word, List<Character> guesses, List<String> missedLetter) {
         System.out.println("Guess a letter: ");
         String input = keyboard.nextLine();
 
@@ -66,7 +65,7 @@ public class hangman {
         return word.contains(input);
     }
 
-    private static void display(int userGuess, List<String> missed) {
+    public static void display(int userGuess, List<String> missed) {
         gameLogic art = new gameLogic();
         System.out.println("HANGMAN");
 
@@ -90,7 +89,7 @@ public class hangman {
 
     }
 
-    private static boolean printWordState(String word, List<Character> guesses) {
+    public static boolean printWordState(String word, List<Character> guesses) {
         int count = 0;
 
         for (int i = 0; i < word.length() ; i++) {
