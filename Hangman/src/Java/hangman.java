@@ -10,42 +10,53 @@ public class hangman {
 
         Scanner scanner = new Scanner(System.in);
         Scanner keyboard = new Scanner(System.in);
-        String word = "adjacent";
+        String word = "crawl";
 
         List<Character> guesses = new ArrayList<>();
         int wrongGuesses = 0;
+        List<String> missedLetters = new ArrayList<>();
+        String missedString = missedLetters.toString();
 
-        display(wrongGuesses);
 
+        display(wrongGuesses, missedLetters);
+        System.out.println("This is the missed string "+missedString);
 
-
-        while(true) {
+        boolean play = true;
+        while(play) {
             printWordState(word, guesses);
-           if(!getPlayerGuess(keyboard, word, guesses)){
+           if(!getPlayerGuess(keyboard, word, guesses,missedLetters)){
                wrongGuesses++;
            }
             if(printWordState(word, guesses)){
                 break;
             };
-            display(wrongGuesses);
+            display(wrongGuesses, missedLetters);
         }
         System.out.println("Yes! The secret word is "+word+ " You have won!");
         System.out.println("Do you want to play again?(yes or no)");
+        String ans = keyboard.nextLine();
+        if(ans.equals("no")) {
+            play = false;
+        }
 
     }
 
-    private static boolean getPlayerGuess(Scanner keyboard, String word, List<Character> guesses) {
+    private static boolean getPlayerGuess(Scanner keyboard, String word, List<Character> guesses, List<String> missedLetter) {
         System.out.println("Guess a letter: ");
         String input = keyboard.nextLine();
 
         if(guesses.contains(input.charAt(0))) {
             System.out.println("You have already guessed that letter. Choose again.");
-            getPlayerGuess(keyboard, word, guesses);
+            getPlayerGuess(keyboard, word, guesses, missedLetter);
         } guesses.add(input.charAt(0));
+
+        if(!word.contains(input)) {
+            missedLetter.add(input);
+        }
         return word.contains(input);
     }
 
-    private static void display(int userGuess) {
+    private static void display(int userGuess, List<String> missed) {
         gameLogic art = new gameLogic();
         System.out.println("HANGMAN");
        /* System.out.println("+--+\n"+
@@ -69,6 +80,7 @@ public class hangman {
             System.out.println(art.hangmanArt()[userGuess - 1]);
         }
 
+        System.out.println("Missed letters: "+missed);
 
     }
 
